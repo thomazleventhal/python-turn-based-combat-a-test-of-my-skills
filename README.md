@@ -1,2 +1,2 @@
-# python-turn-based-combat-a-test-of-my-skills
+# sword.py
 I'm making a turn based combat game, to test my skills in python and train my coding
