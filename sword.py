@@ -6,20 +6,36 @@ def main():
     nome_jogador = input('Olá, como você se chama? ')
     print(f'Que nome legal, {nome_jogador}!')
     print(f'Vamos ver contra quem você ira lutar!')
-    inimigos = ['inimigo1', 'inimigo2','inimigo3']
+    inimigos = ['Goblin', 'Ciclope', 'Golem']
     escolha_inimigo = random.choice(inimigos)
-    if escolha_inimigo == 'inimigo1':
+    print(f'Você está contra um {escolha_inimigo}!')
+    if escolha_inimigo == 'Goblin':
+        print('OBS: Os goblins possuem baixa vida, porém alta chance crítica!')
         vida_CPU = 25
-        critmin = 15
-        critmax = 21
-    elif escolha_inimigo == 'inimigo2':
+        critmin = 17
+        critmax = 21 #Necessita rolar exatamente 20 para o crítico
+        danomin = 4
+        danomax = 9
+        acertomin = 1
+        acertomax = 10 #Se rolar acima de 7, ele erra
+    elif escolha_inimigo == 'Ciclope':
+        print('OBS: Os Ciclopes possuem alto dano, porém baixa precisão!')
         vida_CPU = 40
         critmin = 1
         critmax = 21
-    elif escolha_inimigo == 'inimigo3':
-        vida_CPU = 40
+        danomin = 10
+        danomax = 16
+        acertomin = 1
+        acertomax = 20
+    elif escolha_inimigo == 'Golem':
+        print('OBS: Os golems possuem uma vida elevada, porém um baixo dano')
+        vida_CPU = 60
         critmin = 1
         critmax = 21
+        danomin = 2
+        danomax = 6
+        acertomin = 1
+        acertomax = 10
          
     vida_jogador = 40
     mana_jogador = 20
@@ -61,8 +77,13 @@ def main():
             print('Você defende!')
         elif escolha1 == '3':
             defesa = False
-            escolha_magia = int(input('Qual magia você quer conjurar?\n1- Bola de fogo(-5 de mana)\n2- Raios(-10 de mana)\n3- Canalizar(-0 de mana)\n'))
-            if escolha_magia == 1:
+            while True:
+                escolha_magia = input('Qual magia você quer conjurar?\n1- Bola de fogo(-5 de mana)\n2- Raios(-10 de mana)\n3- Canalizar(-0 de mana)\n')
+                if escolha_magia not in ['1', '2', '3']:
+                    print('Escolha apenas mágicas válidas!')
+                else:
+                    break
+            if escolha_magia == '1':
                 if mana_jogador < 5:
                     print('Você levanta suas mãos para conjurar uma magia, porém saem somente faíscas. Talvez você tenha esquecido quanto de mana possuía?')
                 else:
@@ -76,7 +97,7 @@ def main():
                         print(f'Você conjura uma bola de fogo e atira em seu inimigo. ACERTO CRÍTICO! Você causou {dano_jogador} de dano, deixando seu oponente com {vida_CPU} de vida.')
                     else:
                         print(f'Você conjura uma bola de fogo e atira em seu inimigo, causando {dano_jogador} de dano a ele e o deixando com {vida_CPU} de vida!')
-            elif escolha_magia == 2:
+            elif escolha_magia == '2':
                 if mana_jogador < 10:
                     print('Você levanta suas mãos para conjurar uma magia, porém saem somente faíscas. Talvez você tenha esquecido quanto de mana possuía?')
                 else:
@@ -101,7 +122,7 @@ def main():
                             print(f'Os raios atingem seu oponente mais uma vez. ACERTO CRÍTICO! Você causou {dano_jogador} de dano, deixando seu oponente com {vida_CPU} de vida.')
                         else:
                             print(f'Os raios atingem seu oponente mais uma vez, o causando {dano_jogador} de dano e o deixando com {vida_CPU} de vida!')
-            elif escolha_magia == 3:
+            elif escolha_magia == '3':
                 recuperacao_mana = random.randrange(5,11)
                 mana_jogador += recuperacao_mana
                 print(f'Você recupera {recuperacao_mana} de mana, ficando com {mana_jogador} no total!')
@@ -114,10 +135,10 @@ def main():
 #Turno da CPU
         print('Vez da CPU!')
         if escolha_CPU <= 7:
-            acertou_CPU = random.randrange(1,10)
+            acertou_CPU = random.randrange(acertomin, acertomax)
             defesa_CPU = False
             if acertou_CPU <= 7:
-                dano_CPU = random.randrange(4,9)
+                dano_CPU = random.randrange(danomin,danomax)
                 critico_CPU = random.randrange(critmin, critmax)
                 if critico_CPU == 20:
                     dano_CPU *= 2
