@@ -13,16 +13,16 @@ def main():
         print('OBS: Os goblins possuem baixa vida, porém alta chance crítica!')
         vida_CPU = 25
         critmin = 17
-        critmax = 21 #Necessita rolar exatamente 20 para o crítico
+        critmax = 20 #Necessita rolar exatamente 20 para o crítico
         danomin = 4
-        danomax = 9
+        danomax = 8
         acertomin = 1
         acertomax = 10 #Se rolar acima de 7, ele erra
     elif escolha_inimigo == 'Ciclope':
         print('OBS: Os Ciclopes possuem alto dano, porém baixa precisão!')
         vida_CPU = 40
         critmin = 1
-        critmax = 21
+        critmax = 20
         danomin = 10
         danomax = 16
         acertomin = 1
@@ -31,7 +31,7 @@ def main():
         print('OBS: Os golems possuem uma vida elevada, porém um baixo dano')
         vida_CPU = 60
         critmin = 1
-        critmax = 21
+        critmax = 20
         danomin = 2
         danomax = 6
         acertomin = 1
@@ -51,19 +51,19 @@ def main():
 #escolha_CPU vem antes, pois caso contrário ele não consegueria defender do jeito que quero.
 #Posso consertar isso depois fazendo um sistema de "speed", mas aí eu teria que pensar mais.
         defesa_CPU = False
-        escolha_CPU = random.randrange(1,10)
-        if escolha_CPU >= 8:
+        escolha_CPU = random.randint(1,10)
+        if escolha_CPU > 8:
             defesa_CPU = True
 
         if escolha1 == '1':
-            acertou = random.randrange(1,10)
+            acertou = random.randint(1,10)
             defesa = False
             if acertou <= 7:
-                dano_jogador = random.randrange(3,6)
-                critico_jogador = random.randrange(1,21)
+                dano_jogador = random.randint(3,6)
+                critico_jogador = random.randint(1,20)
                 if critico_jogador == 20:
                     dano_jogador *= 2
-                if defesa_CPU:
+                if defesa_CPU == True:
                     dano_jogador //= 2
                 vida_CPU -= dano_jogador
                 if critico_jogador == 20:
@@ -88,8 +88,8 @@ def main():
                     print('Você levanta suas mãos para conjurar uma magia, porém saem somente faíscas. Talvez você tenha esquecido quanto de mana possuía?')
                 else:
                     mana_jogador -= 5
-                    dano_jogador = random.randrange(5,9)
-                    critico_jogador = random.randrange(1,21)
+                    dano_jogador = random.randint(5,8)
+                    critico_jogador = random.randint(1,20)
                     if critico_jogador == 20:
                         dano_jogador *= 2
                     vida_CPU -= dano_jogador
@@ -102,9 +102,9 @@ def main():
                     print('Você levanta suas mãos para conjurar uma magia, porém saem somente faíscas. Talvez você tenha esquecido quanto de mana possuía?')
                 else:
                     mana_jogador -= 10
-                    atingiu_mais = random.randrange(1,11)
-                    dano_jogador = random.randrange(3,6)
-                    critico_jogador = random.randrange(1,21)
+                    atingiu_mais = random.randint(1,10)
+                    dano_jogador = random.randint(3,5)
+                    critico_jogador = random.randint(1,20)
                     if critico_jogador == 20:
                         dano_jogador *= 2
                     vida_CPU -= dano_jogador
@@ -113,8 +113,8 @@ def main():
                     else:
                         print(f'Você conjura raios que caem dos céus e atingem seu oponente, causando {dano_jogador} de dano e o deixando com {vida_CPU} de vida!')
                     if atingiu_mais <= 6:
-                        dano_jogador = random.randrange(3,6)
-                        critico_jogador = random.randrange(1,21)
+                        dano_jogador = random.randint(3,5)
+                        critico_jogador = random.randint(1,20)
                         if critico_jogador == 20:
                             dano_jogador *= 2
                         vida_CPU -= dano_jogador
@@ -123,7 +123,7 @@ def main():
                         else:
                             print(f'Os raios atingem seu oponente mais uma vez, o causando {dano_jogador} de dano e o deixando com {vida_CPU} de vida!')
             elif escolha_magia == '3':
-                recuperacao_mana = random.randrange(5,11)
+                recuperacao_mana = random.randint(5,10)
                 mana_jogador += recuperacao_mana
                 print(f'Você recupera {recuperacao_mana} de mana, ficando com {mana_jogador} no total!')
             
@@ -134,23 +134,24 @@ def main():
             break
 #Turno da CPU
         print('Vez da CPU!')
-        if escolha_CPU <= 7:
-            acertou_CPU = random.randrange(acertomin, acertomax)
+        if escolha_CPU <= 8:
+            acertou_CPU = random.randint(acertomin, acertomax)
             defesa_CPU = False
             if acertou_CPU <= 7:
-                dano_CPU = random.randrange(danomin,danomax)
-                critico_CPU = random.randrange(critmin, critmax)
+                dano_CPU = random.randint(danomin,danomax)
+                critico_CPU = random.randint(critmin, critmax)
                 if critico_CPU == 20:
                     dano_CPU *= 2
+                if defesa == True:
+                    dano_CPU //= 2
+                if critico_CPU == 20:
                     print(f'Ele te atingiu. ACERTO CRÍTICO! Você perde {dano_CPU} de vida.')
                 else:
                     print(f'Ele te atingiu! Causando {dano_CPU} de dano.')
-                if defesa:
-                    dano_CPU //= 2
                 vida_jogador -= dano_CPU
             elif acertou_CPU >= 8:
                 print('Ele te errou!')
-        elif escolha_CPU >= 8:
+        elif escolha_CPU > 8:
             print('Ele defende!')
 
 #Chegagem de morte do player, já que só é possível ele tomar dano
