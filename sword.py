@@ -40,9 +40,9 @@ def main():
     vida_jogador = 40
     mana_jogador = 20
     while True:
-        print('-' * 30)
+        print('-' * 50)
         print('Seu turno!')
-        print('-' * 30)
+        print('-' * 50)
         while True:
             print(f'O que você deseja fazer? Você possuí {vida_jogador} de vida e {mana_jogador} de mana.\nSeu oponente possuí {vida_CPU} de vida.')
             escolha1 = input('1- Atacar\n2- Defender\n3- Conjurar uma magia\n')
@@ -51,7 +51,7 @@ def main():
             else:
                 break
 
-#escolha_CPU vem antes, pois caso contrário ele não consegueria defender do jeito que quero.
+#escolha_CPU vem antes, pois caso contrário ele não conseguiria defender do jeito que quero.
 #Posso consertar isso depois fazendo um sistema de "speed", mas aí eu teria que pensar mais.
         defesa_CPU = False
         escolha_CPU = random.randint(1,10)
@@ -81,8 +81,8 @@ def main():
         elif escolha1 == '3':
             defesa = False
             while True:
-                escolha_magia = input('Qual magia você quer conjurar?\n1- Bola de fogo(-5 de mana)\n2- Raios(-10 de mana)\n3- Canalizar(-0 de mana)\n')
-                if escolha_magia not in ['1', '2', '3']:
+                escolha_magia = input('Qual magia você quer conjurar?\n1- Bola de fogo(-5 de mana)\n2- Raios(-10 de mana)\n3- Canalizar(-0 de mana)\n4- Veneno(-5 de mana)\n')
+                if escolha_magia not in ['1', '2', '3', '4']:
                     print('Escolha apenas mágicas válidas!')
                 else:
                     break
@@ -129,16 +129,30 @@ def main():
                 recuperacao_mana = random.randint(5,10)
                 mana_jogador += recuperacao_mana
                 print(f'Você recupera {recuperacao_mana} de mana, ficando com {mana_jogador} no total!')
+            elif escolha_magia == '4':
+                if mana_jogador < 5:
+                    print('Você levanta suas mãos para conjurar uma magia, porém saem somente faíscas. Talvez você tenha esquecido quanto de mana possuía?')
+                dano_veneno = 4
+                CPU_envenenado = True
+                turno_veneno = 0
+                print(f'Você conjura um poderoso veneno em direção ao seu inimigo, que entra em sua boca e narinas. Seu inimigo agora está envenenado!')
             
-
 #Checagem de morte, caso o jogador mate o CPU antes do turno dele.
         if vida_CPU <= 0:
             print(f'Você venceu! Parabéns, {nome_jogador}!')
             break
+
 #Turno da CPU
-        print('-' * 30)
+        print('-' * 50)
         print('Vez da CPU!')
-        print('-' * 30)
+        print('-' * 50)
+        if CPU_envenenado:
+            print(f'O {escolha_inimigo} sofre {dano_veneno} de dano devido ao veneno!')
+            vida_CPU -= dano_veneno
+            turno_veneno += 1
+        if CPU_envenenado and turno_veneno >= 3:
+            print(f'O efeito do veneno se dispersa e seu oponente recupera seu estado de saúde')
+            CPU_envenenado = False
         if escolha_CPU <= 8:
             acertou_CPU = random.randint(acertomin, acertomax)
             defesa_CPU = False
@@ -159,10 +173,12 @@ def main():
         elif escolha_CPU > 8:
             print('Ele defende!')
 
-#Chegagem de morte do player, já que só é possível ele tomar dano
-#Após o turno do CPU, isso é feito logo após o dito turno.
+#Chegagem de mortes:
         if vida_jogador <= 0:
             print(f'Que pena, você perdeu.')
+            break
+        if vida_CPU <= 0:
+            print(f'Você venceu! Parabéns, {nome_jogador}!')
             break
 
 
